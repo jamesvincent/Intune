@@ -161,6 +161,6 @@ catch {
         break
     }     
 } elseif ($confirmation -eq 'n') {
-        write-host It Declined
+        write-host Assignment confirmation was declined. No action taken. -ForegroundColor Red
         break
 }
