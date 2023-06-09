@@ -40,7 +40,7 @@ $restParam = @{
 $securityGroup = Invoke-RestMethod @restParam
 $securityGroupTarget = $securityGroup.value
 $NextLink = $securityGroup."@odata.nextLink"
-while ($NextLink -ne $null){
+while ($null -ne $NextLink){
 $securityGroup = (Invoke-RestMethod -Uri $NextLink -Headers $authHeaders -Method Get)
 $NextLink = $securityGroup."@odata.nextLink"
 $securityGroupTarget += $securityGroup.value
@@ -63,7 +63,7 @@ $restParam = @{
 $settingsPolicy = Invoke-RestMethod @restParam
 $settingsPolicyTarget = $settingsPolicy.value
 $NextLink = $settingsPolicy."@odata.nextLink"
-while ($NextLink -ne $null){
+while ($null -ne $NextLink){
 $settingsPolicy = (Invoke-RestMethod -Uri $NextLink -Headers $authHeaders -Method Get)
 $NextLink = $settingsPolicy."@odata.nextLink"
 $settingsPolicyTarget += $settingsPolicy.value
@@ -173,6 +173,6 @@ if ($confirmation -eq 'y') {
     }      
 }
 } elseif ($confirmation -eq 'n') {
-        write-host It Declined
+        write-host User declined assignment, no changes made.
         break
 }
