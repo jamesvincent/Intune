@@ -19,6 +19,7 @@ $SemiAnnualEnt = @{URL="http://officecdn.microsoft.com/pr/b8f9b850-328d-4355-914
 #Beta Channel
 $Beta = @{URL="http://officecdn.microsoft.com/pr/5440fd1f-7ecb-4221-8110-145efaa6372f"; DisplayName="BETA Channel"}
 
+#Update this variable to use the relevant Channel variable defined above. 
 $UpdateChannel = $Current
 $CTRPath = "HKLM:\SOFTWARE\Microsoft\Office\ClickToRun\Configuration"
 $CDNBaseUrl = Get-ItemProperty -Path $CTRPath -Name "CDNBaseUrl" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty "CDNBaseUrl"
@@ -31,8 +32,6 @@ if ($CDNBaseUrl -ne $null) {
             write-output Office will now initiate an background update for changes to take effect.
             #Start-Process -FilePath "C:\Program Files\Common Files\microsoft shared\ClickToRun\OfficeC2RClient.exe" -ArgumentList "/frequentupdate SCHEDULEDTASK displaylevel=Full" 
             Start-Process -FilePath "C:\Program Files\Common Files\microsoft shared\ClickToRun\OfficeC2RClient.exe" -ArgumentList "/update user displaylevel=Full forceappshutdown=false" 
-        }
-		else {write-output CDNBaseUrl has not been changed and Office remains on $UpdateChannel.DisplayName}
+        } else {write-output CDNBaseUrl has not been changed and Office remains on $UpdateChannel.DisplayName}
     } else {write-host The existing Update Channel on the device is the same as specified $UpdateChannel.DisplayName and was not changed.}
 } else {write-host "The CDNBaseUrl reg key was not found within the Registry, therefore no changes were made"}
-
