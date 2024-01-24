@@ -75,7 +75,6 @@ $BU = read-host "Enter the BU reference, for example FDT, CUK, ESP"
 $BU_UPN_Array = @(
 'domain.com.pl',
 'domain.pl',
-'domain.pl',
 'domain.com')
 
 ###################
@@ -93,7 +92,7 @@ $AzureIDFile = $BU + '-ForensiTAzureID.xml'
 # Collect specific user data
 $azureADUsers = Get-AzureADUser -all:$true | Where-Object {$BU_UPN_Array -contains $_.UserPrincipalName.split("@")[1]} | Select-Object UserPrincipalName, ObjectId, DisplayName -ErrorAction Stop #| export-csv -path ("$((Get-Location).Path)\$BU_UPN_File") 
 
-# Commenct out the line above with # if you want to collect All Data, and remove the # from line 95 -- # $azureADUsers = Get-A....
+# Comment out the line above with # if you want to collect All Data, and remove the # from line 95 -- # $azureADUsers = Get-A....
 # Collect All User data from the target tenant.
 # $azureADUsers = Get-AzureADUser -all:$true 
 
