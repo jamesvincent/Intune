@@ -350,8 +350,9 @@ else {
 
 # Set Device Category
 if ($SetCategory -ne $False) {
+    Write-host "Evaluating Device Category" -ForegroundColor Green 
     # Get the categories from Intune so we have the ID
-    Write-Host "Getting List of Categories from Intune" -ForegroundColor Green
+    Write-Host "Getting List of Categories from Intune"
     $Categories = Get-DeviceManagement_DeviceCategories
     $CatNames = $Categories.DisplayName
     Write-host "Found $($Categories.Count) Categories in Intune"  
@@ -373,14 +374,12 @@ if ($SetCategory -ne $False) {
 
     # Set the device categories
     foreach ($Computer in $Computers) {
-        Write-host "** BEGIN **- Settting category for next device" 
         if ($InputFile) {
             $ComputerName = $Computer.ComputerName
             $IntuneID = $Computer.IntuneID
         }         
                             
         If ($ComputerName) {
-            Write-host "** BEGIN ** - Settting category for $ComputerName" -ForegroundColor Green
             $Device = Get-DeviceInfo -ComputerName $ComputerName
 
             Write-Host "Found $ComputerName in Intune"
@@ -428,7 +427,7 @@ if ($SetCategory -ne $False) {
                 }
             }
         }
-        Write-host "*** END *** - settting category for $DeviceID" -ForegroundColor Red
+        Write-host "Finished processing the Device Category" -ForegroundColor Red
     }
 }
 
@@ -441,7 +440,7 @@ if ($SetOwner -ne $False) {
         }   
                           
         If ($ComputerName) {
-            Write-host "Setting Device Ownership for $ComputerName" -ForegroundColor Green 
+            Write-host "Evaluating Device Ownership" -ForegroundColor Green 
             $Device = Get-DeviceInfo -ComputerName $ComputerName
             if ($Device) {
                 if ($Device.ManagedDeviceOwnerType -ne $Owner) {
@@ -488,7 +487,7 @@ if ($SetOwner -ne $False) {
             }
         }
     }
-    Write-host "Finished setting Device Ownership for $ComputerName" -ForegroundColor Red
+    Write-host "Finished processing the Device Ownership" -ForegroundColor Red
 }
 
 # Set the Primary User
@@ -498,7 +497,7 @@ if ($SetPrimaryUser) {
         # The above logic should be applied to Category also
         if ($LastLogonUser) {
             # Last logged on user variable is true. No matter how we got a list of computers to work on we are using last logged on user to set Primary User!
-            Write-Host "Setting Primary User on devices based on the last logged on user." -ForegroundColor Green
+            Write-Host "Evaluating Primary User" -ForegroundColor Green
 
             foreach ($computer in $computers) {
                 #Write-host "Setting the Primary User for next device:" $computer.ComputerName $Computer.IntuneID 
@@ -593,7 +592,7 @@ if ($SetPrimaryUser) {
             }
         }
         else {
-        Write-host "Setting the Primary User for $ComputerName" -ForegroundColor Green   
+        Write-host "Evaluating Primary User" -ForegroundColor Green   
             foreach ($computer in $computers) {
                 write-host "The desired Primary User was defined as $UserName via the command line"
                 $Device = Get-DeviceInfo -ComputerName $ComputerName
@@ -620,7 +619,7 @@ if ($SetPrimaryUser) {
             }
         }
     }
-    Write-host "Finished setting the Primary User for $ComputerName" -ForegroundColor Red   
+    Write-host "Finished processing the Primary User" -ForegroundColor Red   
 }
 
 
