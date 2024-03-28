@@ -40,10 +40,10 @@
 .NOTES
     Requires modules AzureADPreview,Microsoft.Graph.Intune,Microsoft.Graph
 
-    7.0 - 3-21-2023 - John Marcum - csv import and last logged on user tested and confirmed to work.
-    9.0 - 3-22-2024 - John Marcum - Fixed bugs, added tons of logging, added ability to use Intune Device ID instead of computer name.
-	10.1 - 3-25-2024 - John Marcum - Fix bugs reported by James Vincent @LinkedIn [https://www.linkedin.com/in/jddvincent/]
-    11.0 - 3-28-2024 - James Vincent - Refactored some sections, changes mostly made to Host outputs. Added some error checking.
+	7.0	3-21-2023	John Marcum - csv import and last logged on user tested and confirmed to work.
+    	9.0	3-22-2024	John Marcum - Fixed bugs, added tons of logging, added ability to use Intune Device ID instead of computer name.
+    	10.1	3-25-2024	John Marcum - Fix bugs reported by James Vincent @LinkedIn [https://www.linkedin.com/in/jddvincent/]
+    	11.0	3-28-2024	James Vincent - Refactored some sections, changes mostly made to Host outputs. Added some error checking.
 #>
 
 [CmdletBinding()]
