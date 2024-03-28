@@ -2,8 +2,8 @@
 .SYNOPSIS
 	Batch update Intune device category and/or Primary User
     Batch update ownership to corporate.
-	Batch update Intune device an input file or using a naming prefix ,
-	or direct names via the -ComputerName, -CategoryName, and/or -UserName parameter(s).
+	Batch update Intune device using an input file or using a naming prefix
+	or direct via the -ComputerName, -CategoryName, and/or -UserName parameter(s).
 .PARAMETER ComputerName
 	Name of one or more computers
 .PARAMETER IntputFile
@@ -21,40 +21,44 @@
 .PARAMETER LastLogonUser
     True/False value whether to use the last logon user as Primary User.
 .PARAMETER UserName
-    Name of one or more users. Required if PrimaryUser is $True.
+    Name of one or more users. Required if SetPrimaryUser is $True.
     Cannot be used with LastLogonUser
     Can be provided in .CSV
 .PARAMETER ComputerPrefix
     Specify the prefix of computer names to set category
     Cannot be used with InputFile nor ComputerName
 .EXAMPLE
- .\Set-UserAndCategory.ps1 -ComputerName COMPUTER-12345 -SetPrimaryUser $True -UserName jmarcum@systemcenteradmin.com -SetOwner $True -Owner Company -SetCategory $False -SetLastLoggonUser $False
- .\Set-UserAndCategory.ps1 -ComputerName COMPUTER-12345 -SetPrimaryUser $True -UserName jmarcum@systemcenteradmin.com -SetOwner $True -Owner Company
- .\Set-UserAndCategory.ps1 -ComputerName COMPUTER-12345 -LastLogonUser $True -SetCategory $True -CategoryName Accounting
- .\Set-DeviceOwner.ps1 -ComputerName IT-JVTESTVM01 -SetPrimaryUser $True -LastLogonUser $True
- .\Set-DeviceOwner.ps1 -ComputerName IT-JVTESTVM01 -SetPrimaryUser $True -UserName jmarcum@systemcenteradmin.com
+    Requires -InputFile or -ComputerName parameters.
+
+    .\Set-DeviceProperties.ps1 -ComputerName COMPUTER-12345 -SetPrimaryUser $True -UserName jmarcum@systemcenteradmin.com -SetOwner $True -Owner Company -SetCategory $False -SetLastLoggonUser $False
+    .\Set-DeviceProperties.ps1 -ComputerName COMPUTER-12345 -SetPrimaryUser $True -UserName jmarcum@systemcenteradmin.com -SetOwner $True -Owner Company
+    .\Set-DeviceProperties.ps1 -ComputerName COMPUTER-12345 -LastLogonUser $True -SetCategory $True -CategoryName Accounting
+    .\Set-DeviceProperties.ps1 -ComputerName IT-JVTESTVM01 -SetPrimaryUser $True -LastLogonUser $True
+    .\Set-DeviceProperties.ps1 -ComputerName IT-JVTESTVM01 -SetPrimaryUser $True -UserName jmarcum@systemcenteradmin.com
+    .\Set-DeviceProperties.ps1 -InputFile "C:\Temp\Set-DeviceProperties.csv" -SetPrimaryUser $True
 
 .NOTES
-    Requires modules AzureAD,Microsoft.Graph.Intune,Microsoft.Graph
+    Requires modules AzureADPreview,Microsoft.Graph.Intune,Microsoft.Graph
 
     7.0 - 3-21-2023 - John Marcum - csv import and last logged on user tested and confirmed to work.
     9.0 - 3-22-2024 - John Marcum - Fixed bugs, added tons of logging, added ability to use Intune Device ID instead of computer name.
-	10.1 - 3-25-2024  fix bugs reported by James Vincent @LinkedIn
+	10.1 - 3-25-2024 - John Marcum - Fix bugs reported by James Vincent @LinkedIn [https://www.linkedin.com/in/jddvincent/]
+    11.0 - 3-28-2024 - James Vincent - Refactored some sections, changes mostly made to Host outputs. Added some error checking.
 #>
 
 [CmdletBinding()]
 param (
-    [parameter(Mandatory = $False)][string]$ComputerName = "",
-    [parameter(Mandatory = $False)][string]$IntuneID = "",
-    [parameter(Mandatory = $False)][string]$ComputerPrefix = "",
-    [parameter(Mandatory = $False)][string]$InputFile = "",
-    [parameter(Mandatory = $False)][bool]$SetCategory = $False,
-    [parameter(Mandatory = $False)][string]$CategoryName = "",
-    [parameter(Mandatory = $False)][bool]$SetPrimaryUser = $False,
-    [parameter(Mandatory = $False)][bool]$LastLogonUser = $False,    
-    [parameter(Mandatory = $False)][string]$UserName = "",
-    [parameter(Mandatory = $False)][bool]$SetOwner = $False,
-    [parameter(Mandatory = $False)][ValidateSet("Company", "Personal")][string]$Owner = "Company"
+    [string]$ComputerName = "",
+    [string]$IntuneID = "",
+    [string]$ComputerPrefix = "",
+    [string]$InputFile = "",
+    [bool]$SetCategory = $False,
+    [string]$CategoryName = "",
+    [bool]$SetPrimaryUser = $False,
+    [bool]$LastLogonUser = $False,    
+    [string]$UserName = "",
+    [bool]$SetOwner = $False,
+    [ValidateSet("Company", "Personal")][string]$Owner = "Company"
 )
 
 ######## Begin Functions ########
@@ -71,7 +75,6 @@ function Assert-ModuleExists([string]$ModuleName) {
     }    
 }
 
-
 ####################################################
 
 # Get device info from Intune
@@ -85,8 +88,6 @@ function Get-DeviceInfo {
     | Select-Object DeviceName, UserPrincipalName, id, userId, DeviceCategoryDisplayName, ManagedDeviceOwnerType, chassisType, usersLoggedOn
 }
 
-
-
 # Get device info from Intune
 function Get-DeviceInfoByID {
     [CmdletBinding()]
@@ -96,9 +97,6 @@ function Get-DeviceInfoByID {
     Get-IntuneManagedDevice -managedDeviceId $IntuneID `
     | Select-Object DeviceName, UserPrincipalName, id, userId, DeviceCategoryDisplayName, ManagedDeviceOwnerType, chassisType, usersLoggedOn
 }
-
-
-
 
 ####################################################
 
@@ -241,7 +239,6 @@ function Set-LastLogon {
         else {
             #If the result does not match the expecation something did not work right
             Write-Host "Failed to set as Primary User for device" $Device.deviceName
-        
         }
     }
     else {
@@ -255,13 +252,35 @@ function Set-LastLogon {
 
 ######## *** END *** Functions ########
 
-
 ######## Script Entry Point ########
 # Start logging
 $Today = Get-Date -Format "ddMMyyyy_HHmm"
-$LogPath = "$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\Set-DeviceOwner-" + $Today + ".log"
+$LogPath = "$env:Temp\Set-DeviceProperties-" + $Today + ".log"
 Start-Transcript $LogPath
 Write-Host "Script started."
+
+# Check if either InputFile or ComputerName variable is empty
+if ([string]::IsNullOrEmpty($InputFile) -and [string]::IsNullOrEmpty($ComputerName)) {
+    Write-Error "InputFile or ComputerName variable is empty. Please ensure one parameter is used."
+    Stop-Transcript
+    exit 1
+}
+
+if (-not [string]::IsNullOrEmpty($ComputerName) -or ($SetPrimaryUser -eq $True)) {
+    if ([string]::IsNullOrEmpty($UserName)) {
+        if ($LastLogonUser -eq $False) {
+        Write-Error "No UserName was supplied and the LastLogonUser is not set to $True."
+        Stop-Transcript
+        exit 1
+        }
+    }
+}
+
+if (($UserName) -and ($SetPrimaryUser -eq $False) -or ($LastLogonUser -eq $False)) {
+    Write-Warning "A UserName was supplied, but SetPrimaryUser was not defined (Default = False). The Primary User will not be set."
+    Stop-Transcript
+    exit 1
+}
 
 # Install required modules
 if ($SetPrimaryUser) {
@@ -307,7 +326,8 @@ Prefix And InputFile Cannot
 
 if ([string]::IsNullOrEmpty($ComputerName)) {
     if ($InputFile) {
-        Write-Host "The Computer name was not provided as a parameter, checking for CSV intput file"
+        Write-Host "Evaluating Primary User" -ForegroundColor Green
+        Write-Host "The ComputerName parameter was not used, checking for CSV input file"
         if (-not(Test-Path $InputFile)) {
             throw "File not found: $InputFile"
         }
@@ -404,7 +424,7 @@ if ($SetCategory -ne $False) {
         
         If (!($ComputerName)) {     
             If ($IntuneID) {
-                Write-host "** BEGIN ** - settting category for $IntuneID" -ForegroundColor Green
+                Write-host "Setting category for $IntuneID"
                 $Device = Get-DeviceInfoByID -managedDeviceId $IntuneID
                 Write-Host "Found $IntuneID in Intune"
                 if (!($device)) {
@@ -456,7 +476,6 @@ if ($SetOwner -ne $False) {
                     write-host $Device.DeviceName "Device Ownership is already set to $Owner, no action taken."
                 }
             }       
-
             else {
                 Write-Warning "$ComputerName was not found in Intune."
             }
@@ -491,10 +510,10 @@ if ($SetOwner -ne $False) {
 }
 
 # Set the Primary User
-if ($SetPrimaryUser) {    
+#if ($SetPrimaryUser)
+if (-not ([string]::IsNullOrEmpty($SetPrimaryUser))) {    
     if ([string]::IsNullOrEmpty($UserName)) {
         # This will not run if there is a username in the csv or on the command line!
-        # The above logic should be applied to Category also
         if ($LastLogonUser) {
             # Last logged on user variable is true. No matter how we got a list of computers to work on we are using last logged on user to set Primary User!
             Write-Host "Evaluating Primary User" -ForegroundColor Green
@@ -527,11 +546,11 @@ if ($SetPrimaryUser) {
                             Set-LastLogon                 
                         }
                         else {
-                            write-host "We can't find the last logged on user. Cannot work on this device!"
+                            write-host "We can't find the last logged on user. Cannot modify this device!"
                         }
                     }   
                     else {
-                        Write-Warning "Not found in Intune."
+                        Write-Warning "$ComputerName not found in Intune. Cannot modify this device!"
                     }  
                 }              
                 
@@ -567,7 +586,7 @@ if ($SetPrimaryUser) {
         }
     }
     if (!($LastLogonUser)) {
-        # The last logged on user varilable is not set to true. Let's check the input file for device/user pairs and set the user that way. 
+        # The last logged on user variable is not set to true. Let's check the input file for device/user pairs and set the user that way. 
         if ($Inputfile) {
                                
             foreach ($Row in $computers) {
@@ -575,17 +594,21 @@ if ($SetPrimaryUser) {
                 $User = $Row.UserName
                 $Device = Get-DeviceInfo -Computername $Computer
                 $Userid = Get-AzureADUser -Filter "userPrincipalName eq '$User'" | Select -ExpandProperty ObjectId
-                Write-Host "Found $User $Userid"
+                write-host "The desired Primary User for $Computer was defined as $User within the CSV"
+                #Write-Host "Found $User $Userid"
                 if (!($device -and $Userid)) {
-                    Write-Warning "$Computer and/or $UserName not found."
+                    Write-Warning "$Computer and/or $User not found."
                 }
                 else {
                     $DeviceID = $Device.id
                     $CurrentUser = Get-IntuneDevicePrimaryUser -DeviceId $deviceID
                     if ($CurrentUser -ne $Userid) {
-                        Set-IntuneDevicePrimaryUser -DeviceId $deviceID -userId $userID 
+                        Write-Host "$User is NOT currently the Primary User"
+                        Write-Host "The Primary User for $ComputerName will be set to $User"
+                        Set-IntuneDevicePrimaryUser -DeviceId $deviceID -userId $userID
                     }
                     else {
+                        Write-Host "$User is already set as the Primary User"
                         Write-Host "No change in Primary User is required"
                     }
                 }
@@ -620,6 +643,9 @@ if ($SetPrimaryUser) {
         }
     }
     Write-host "Finished processing the Primary User" -ForegroundColor Red   
+}
+else {
+    Write-host "SetPrimaryUser is not $True" -ForegroundColor Red   
 }
 
 
