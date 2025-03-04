@@ -5,7 +5,9 @@ Author: Joymalya Basu Roy
 DESCRIPTION
 The script is created based on the Microsoft 365 IP Address and URL web service (https://aka.ms/ipurlws). 
 A REST API call is made to the Worldwide instance to obtain the latest endpoint URLs 
-for Service Area "MEM" and then check connectivity to those endpoint URLs from the client.
+for Service Area "MEM" and related "M365 Common" and then check connectivity to those endpoint URLs from the client.
+
+Updated by James Vincent - March 2025 to include logging output.
 
 PARAMETERS
 n/a
@@ -15,10 +17,21 @@ PS script execution policy: Bypass
 PowerShell 3.0 or later
 Does not require elevation
 #>
+$Timestamp = (Get-Date).toString("ddMMyyyy-HHmm")
+$Logfile = "./Test-IntuneConnectivity-$Timestamp.log"
+function WriteLog
+{
+Param ([string]$LogString)
+    $Stamp = (Get-Date).toString("dd/MM/yyyy HH:mm:ss")
+    $LogMessage = "$Stamp $LogString"
+    Add-content $LogFile -value $LogMessage -Encoding UTF8
+}
 
 Function Get-ProxySettings {
     # Check Proxy settings
     Write-Host "Checking winHTTP proxy settings..." -ForegroundColor Yellow
+    WriteLog "Checking winHTTP proxy settings..."
+
     $ProxyServer = "NoProxy"
     $winHTTP = netsh winhttp show proxy
     $Proxy = $winHTTP | Select-String server
@@ -26,12 +39,15 @@ Function Get-ProxySettings {
 
     if ($ProxyServer -eq "Direct access (no proxy server).") {
         $ProxyServer = "NoProxy"
-        Write-Host "Access Type : DIRECT"
+        Write-Host "Access Type: DIRECT"
+        WriteLog "Access Type: DIRECT"
     }
 
     if ( ($ProxyServer -ne "NoProxy") -and (-not($ProxyServer.StartsWith("http://")))) {
-        Write-Host "Access Type : PROXY"
-        Write-Host "Proxy Server List :" $ProxyServer
+        Write-Host "Access Type: PROXY"
+        Write-Host "Proxy Server List: $($ProxyServer)"
+        WriteLog "Access Type: PROXY"
+        WriteLog "Proxy Server List: $($ProxyServer)"
         $ProxyServer = "http://" + $ProxyServer
     }
     return $ProxyServer
@@ -120,12 +136,14 @@ Function Test-DeviceIntuneConnectivity {
     $failedEndpointList = @{}
 
     Write-Host "Starting Connectivity Check..." -ForegroundColor Yellow
+    WriteLog "Starting Connectivity Check..." 
 
     foreach ($endpoint in $endpointListM365Common) 
     {        
         if ($endpoint.mandatory -eq $true) 
         {  
-            Write-Host "Checking Category: ..." $endpoint.category -ForegroundColor Yellow
+            Write-Host "Checking Category: $($endpoint.category)" -ForegroundColor Yellow
+            WriteLog "Checking Category: $($endpoint.category)" 
             foreach ($url in $endpoint.urls) {
                 if ($ProxyServer -eq "NoProxy") 
                 {
@@ -138,16 +156,20 @@ Function Test-DeviceIntuneConnectivity {
                 if ($TestResult -eq 200) 
                 {
                     if (($url.StartsWith('approdimedata') -or ($url.StartsWith("intunemaape13") -or $url.StartsWith("intunemaape17") -or $url.StartsWith("intunemaape18") -or $url.StartsWith("intunemaape19")))) {
-                        Write-Host "Connection to " $url ".............. Succeeded (needed for Asia & Pacific tenants only)." -ForegroundColor Green 
+                        Write-Host "Connection to $($url).............. Succeeded (needed for Asia & Pacific tenants only)." -ForegroundColor Green 
+                        WriteLog "Connection to $($url).............. Succeeded (needed for Asia & Pacific tenants only)."
                     }
                     elseif (($url.StartsWith('euprodimedata') -or ($url.StartsWith("intunemaape7") -or $url.StartsWith("intunemaape8") -or $url.StartsWith("intunemaape9") -or $url.StartsWith("intunemaape10") -or $url.StartsWith("intunemaape11") -or $url.StartsWith("intunemaape12")))) {
-                        Write-Host "Connection to " $url ".............. Succeeded (needed for Europe tenants only)." -ForegroundColor Green 
+                        Write-Host "Connection to $($url).............. Succeeded (needed for Europe tenants only)." -ForegroundColor Green 
+                        WriteLog "Connection to $($url).............. Succeeded (needed for Europe tenants only)."
                     }
                     elseif (($url.StartsWith('naprodimedata') -or ($url.StartsWith("intunemaape1") -or $url.StartsWith("intunemaape2") -or $url.StartsWith("intunemaape3") -or $url.StartsWith("intunemaape4") -or $url.StartsWith("intunemaape5") -or $url.StartsWith("intunemaape6")))) {
-                        Write-Host "Connection to " $url ".............. Succeeded (needed for North America tenants only)." -ForegroundColor Green 
+                        Write-Host "Connection to $($url).............. Succeeded (needed for North America tenants only)." -ForegroundColor Green 
+                        WriteLog "Connection to $($url).............. Succeeded (needed for North America tenants only)."
                     }
                     else {
-                        Write-Host "Connection to " $url ".............. Succeeded." -ForegroundColor Green 
+                        Write-Host "Connection to $($url).............. Succeeded." -ForegroundColor Green 
+                        WriteLog "Connection to $($url).............. Succeeded."
                     }
                 }
                 else 
@@ -160,16 +182,20 @@ Function Test-DeviceIntuneConnectivity {
                         $failedEndpointList.Add($endpoint.category, $url)
                     }
                     if (($url.StartsWith('approdimedata') -or ($url.StartsWith("intunemaape13") -or $url.StartsWith("intunemaape17") -or $url.StartsWith("intunemaape18") -or $url.StartsWith("intunemaape19")))) {
-                        Write-Host "Connection to " $url ".............. Failed (needed for Asia & Pacific tenants only)." -ForegroundColor Red 
+                        Write-Host "Connection to $($url).............. Failed (needed for Asia & Pacific tenants only)." -ForegroundColor Red 
+                        WriteLog "Connection to $($url).............. Failed (needed for Asia & Pacific tenants only)." 
                     }
                     elseif (($url.StartsWith('euprodimedata') -or ($url.StartsWith("intunemaape7") -or $url.StartsWith("intunemaape8") -or $url.StartsWith("intunemaape9") -or $url.StartsWith("intunemaape10") -or $url.StartsWith("intunemaape11") -or $url.StartsWith("intunemaape12")))) {
-                        Write-Host "Connection to " $url ".............. Failed (needed for Europe tenants only)." -ForegroundColor Red 
+                        Write-Host "Connection to $($url).............. Failed (needed for Europe tenants only)." -ForegroundColor Red 
+                        WriteLog "Connection to $($url).............. Failed (needed for Europe tenants only)."
                     }
                     elseif (($url.StartsWith('naprodimedata') -or ($url.StartsWith("intunemaape1") -or $url.StartsWith("intunemaape2") -or $url.StartsWith("intunemaape3") -or $url.StartsWith("intunemaape4") -or $url.StartsWith("intunemaape5") -or $url.StartsWith("intunemaape6")))) {
-                        Write-Host "Connection to " $url ".............. Failed (needed for North America tenants only)." -ForegroundColor Red 
+                        Write-Host "Connection to $($url).............. Failed (needed for North America tenants only)." -ForegroundColor Red 
+                        WriteLog "Connection to $($url).............. Failed (needed for North America tenants only)."
                     }
                     else {
-                        Write-Host "Connection to " $url ".............. Failed." -ForegroundColor Red 
+                        Write-Host "Connection to $($url).............. Failed." -ForegroundColor Red 
+                        WriteLog "Connection to $($url).............. Failed."
                     }
                 }
             }
@@ -184,7 +210,8 @@ Function Test-DeviceIntuneConnectivity {
     {        
         if ($endpoint.mandatory -eq $true) 
         {
-            Write-Host "Checking Category: ..." $endpoint.category -ForegroundColor Yellow
+            Write-Host "Checking Category: $($endpoint.category)" -ForegroundColor Yellow
+            WriteLog "Checking Category: $($endpoint.category)"
             foreach ($url in $endpoint.urls) {
                 if ($ProxyServer -eq "NoProxy") {
                     $TestResult = (Invoke-WebRequest -uri $url -UseBasicParsing).StatusCode
@@ -194,16 +221,20 @@ Function Test-DeviceIntuneConnectivity {
                 }
                 if ($TestResult -eq 200) {
                     if (($url.StartsWith('approdimedata') -or ($url.StartsWith("intunemaape13") -or $url.StartsWith("intunemaape17") -or $url.StartsWith("intunemaape18") -or $url.StartsWith("intunemaape19")))) {
-                        Write-Host "Connection to " $url ".............. Succeeded (needed for Asia & Pacific tenants only)." -ForegroundColor Green 
+                        Write-Host "Connection to $($url).............. Succeeded (needed for Asia & Pacific tenants only)." -ForegroundColor Green 
+                        WriteLog "Connection to $($url).............. Succeeded (needed for Asia & Pacific tenants only)." 
                     }
                     elseif (($url.StartsWith('euprodimedata') -or ($url.StartsWith("intunemaape7") -or $url.StartsWith("intunemaape8") -or $url.StartsWith("intunemaape9") -or $url.StartsWith("intunemaape10") -or $url.StartsWith("intunemaape11") -or $url.StartsWith("intunemaape12")))) {
-                        Write-Host "Connection to " $url ".............. Succeeded (needed for Europe tenants only)." -ForegroundColor Green 
+                        Write-Host "Connection to $($url).............. Succeeded (needed for Europe tenants only)." -ForegroundColor Green 
+                        WriteLog "Connection to $($url).............. Succeeded (needed for Europe tenants only)." 
                     }
                     elseif (($url.StartsWith('naprodimedata') -or ($url.StartsWith("intunemaape1") -or $url.StartsWith("intunemaape2") -or $url.StartsWith("intunemaape3") -or $url.StartsWith("intunemaape4") -or $url.StartsWith("intunemaape5") -or $url.StartsWith("intunemaape6")))) {
-                        Write-Host "Connection to " $url ".............. Succeeded (needed for North America tenants only)." -ForegroundColor Green 
+                        Write-Host "Connection to $($url).............. Succeeded (needed for North America tenants only)." -ForegroundColor Green 
+                        WriteLog "Connection to $($url).............. Succeeded (needed for North America tenants only)." 
                     }
                     else {
-                        Write-Host "Connection to " $url ".............. Succeeded." -ForegroundColor Green 
+                        Write-Host "Connection to $($url).............. Succeeded." -ForegroundColor Green 
+                        WriteLog "Connection to $($url).............. Succeeded." 
                     }
                 }
                 else {
@@ -215,16 +246,20 @@ Function Test-DeviceIntuneConnectivity {
                         $failedEndpointList.Add($endpoint.category, $url)
                     }
                     if (($url.StartsWith('approdimedata') -or ($url.StartsWith("intunemaape13") -or $url.StartsWith("intunemaape17") -or $url.StartsWith("intunemaape18") -or $url.StartsWith("intunemaape19")))) {
-                        Write-Host "Connection to " $url ".............. Failed (needed for Asia & Pacific tenants only)." -ForegroundColor Red 
+                        Write-Host "Connection to $($url).............. Failed (needed for Asia & Pacific tenants only)." -ForegroundColor Red
+                        WriteLog "Connection to $($url).............. Failed (needed for Asia & Pacific tenants only)." 
                     }
                     elseif (($url.StartsWith('euprodimedata') -or ($url.StartsWith("intunemaape7") -or $url.StartsWith("intunemaape8") -or $url.StartsWith("intunemaape9") -or $url.StartsWith("intunemaape10") -or $url.StartsWith("intunemaape11") -or $url.StartsWith("intunemaape12")))) {
-                        Write-Host "Connection to " $url ".............. Failed (needed for Europe tenants only)." -ForegroundColor Red 
+                        Write-Host "Connection to $($url).............. Failed (needed for Europe tenants only)." -ForegroundColor Red
+                        WriteLog "Connection to $($url).............. Failed (needed for Europe tenants only)." 
                     }
                     elseif (($url.StartsWith('naprodimedata') -or ($url.StartsWith("intunemaape1") -or $url.StartsWith("intunemaape2") -or $url.StartsWith("intunemaape3") -or $url.StartsWith("intunemaape4") -or $url.StartsWith("intunemaape5") -or $url.StartsWith("intunemaape6")))) {
-                        Write-Host "Connection to " $url ".............. Failed (needed for North America tenants only)." -ForegroundColor Red 
+                        Write-Host "Connection to $($url).............. Failed (needed for North America tenants only)." -ForegroundColor Red
+                        WriteLog "Connection to $($url).............. Failed (needed for North America tenants only)." 
                     }
                     else {
-                        Write-Host "Connection to " $url ".............. Failed." -ForegroundColor Red 
+                        Write-Host "Connection to $($url).............. Failed." -ForegroundColor Red 
+                        WriteLog "Connection to $($url).............. Failed." 
                     }
                 }
             }
@@ -235,25 +270,27 @@ Function Test-DeviceIntuneConnectivity {
         }
     }
 
-    # If test failed
+    # If the test failed
     if ($TestFailed) 
     {
         Write-Host "Test failed. Please check the following URLs:" -ForegroundColor Red
+        WriteLog "Test failed. Please check the following URLs:"  
         foreach ($failedEndpoint in $failedEndpointList.Keys) {
             Write-Host $failedEndpoint -ForegroundColor Red
+            WriteLog $failedEndpoint
             foreach ($failedUrl in $failedEndpointList[$failedEndpoint]) {
                 Write-Host $failedUrl -ForegroundColor Red
+                WriteLog $failedUrl
             }
         }
     }
     Write-Host "Test-DeviceIntuneConnectivity completed successfully." -ForegroundColor Green -BackgroundColor Black
+    WriteLog "Test-DeviceIntuneConnectivity completed successfully." 
 }
-
 
 ### Main ###
 
 # Main function call
-Start-Transcript -Path ".\Test-IntuneConnectivity.log"
 Test-DeviceIntuneConnectivity
 
 # Get the current network config of the system and display
@@ -269,5 +306,5 @@ Get-NetIPConfiguration | ForEach-Object {
         DNSServer = if($null -ne $_.DNSServer){$_.DNSServer.ServerAddresses}else{""}
     }
 }
-Stop-Transcript
+
 $NetworkConfiguration | Format-Table -AutoSize
