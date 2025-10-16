@@ -1,0 +1,5 @@
+Script: Get-WinGetDefaultStateSize.ps1
+Purpose: Reports the total size of the WinGet defaultState folder.
+Response to Microsoft outage/issue: IT1168328 - 9th October 2025.
+James Vincent
+https://jamesvincent.co.uk/2025/10/15/mitigate-it1168328-winget-defaultstate-self-destruction/
