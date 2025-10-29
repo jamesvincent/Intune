@@ -1,0 +1,77 @@
+# ===============================
+# Information
+# ===============================
+# Script to collect Apple Enrollment Program Token Configuration
+# Attempts to PATCH the "doNotUseProfileFromBackup" option [NOT WORKING]
+# Author: James Vincent - October 2025
+# https://jamesvincent.co.uk/2025/10/28/replacing-a-supervised-and-managed-ios-device/
+
+# ===============================
+# Variables - fill these in
+# ===============================
+$tenantId = "<YOUR_TENANT_ID>"
+$clientId = "<YOUR_APP_CLIENT_ID>"
+$clientSecret = "<YOUR_APP_CLIENT_SECRET>"
+$depOnboardingSettingId = "<DEP_ONBOARDING_TOKEN_ID>" # Replace with actual DEP Onboarding Token ID
+$depProfileId = "<DEP_PROFILE_ID>" # Replace with actual DEP Enrollment Profile ID
+
+# ===============================
+# OAuth2 Token
+# ===============================
+$tokenUrl = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"
+$graphApiUrl = "https://graph.microsoft.com/beta/deviceManagement/depOnboardingSettings/$depOnboardingSettingId/enrollmentProfiles/$depProfileId"
+
+$body = @{
+    client_id     = $clientId
+    scope         = "https://graph.microsoft.com/.default"
+    client_secret = $clientSecret
+    grant_type    = "client_credentials"
+}
+
+$response = Invoke-RestMethod -Method POST -Uri $tokenUrl -Body $body
+$accessToken = $response.access_token
+
+$headers = @{
+    Authorization = "Bearer $accessToken"
+    "Content-Type" = "application/json"
+}
+
+# ===============================
+# Step 1: GET the DEP Enrollment Profile
+# ===============================
+Write-Host "Fetching DEP Enrollment Profile with ID: $depProfileId..."
+$result = Invoke-RestMethod -Method GET -Uri $graphApiUrl -Headers $headers
+
+Write-Host "`nFull Profile Details:"
+$result | ConvertTo-Json -Depth 5
+
+# ===============================
+# Step 2: Check and update doNotUseProfileFromBackup
+# ===============================
+$updateNeeded = $false
+
+if ($result.PSObject.Properties.Name -contains "doNotUseProfileFromBackup") {
+    if (-not $result.doNotUseProfileFromBackup) {
+        Write-Host "Property 'doNotUseProfileFromBackup' exists but is FALSE — will update it to TRUE."
+        $updateNeeded = $true
+    } else {
+        Write-Host "Property 'doNotUseProfileFromBackup' already TRUE — no action needed."
+    }
+} else {
+    Write-Host "Property 'doNotUseProfileFromBackup' not found — will add and set it to TRUE."
+    $updateNeeded = $true
+}
+
+# # ===============================
+# # Step 3: PATCH if needed
+# # ===============================
+# if ($updateNeeded) {
+#     $patchBody = @{
+#         doNotUseProfileFromBackup = $true
+#     } | ConvertTo-Json
+
+#     Write-Host "Sending PATCH request to update profile..."
+#     Invoke-RestMethod -Method PATCH -Uri $graphApiUrl -Headers $headers -Body $patchBody
+
+#     Write-Host "'doNotUseProfileFromBackup' successfully set to TRUE."
+# }
