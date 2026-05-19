@@ -8,8 +8,32 @@
 
 set -e
 
-read -p "Enter the path to your collection of backgrounds: " IMAGE_LOCATION
-read -p "Enter a description for the images, for example SummerCampaign2026: " IMAGE_NAME
+# Parse parameters
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -ImageLocation)
+            IMAGE_LOCATION="$2"
+            shift 2
+            ;;
+        -ImageName)
+            IMAGE_NAME="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown parameter: $1"
+            exit 1
+            ;;
+    esac
+done
+
+# Prompt if parameters not supplied
+if [ -z "$IMAGE_LOCATION" ]; then
+    read -p "Enter the path to your collection of backgrounds: " IMAGE_LOCATION
+fi
+
+if [ -z "$IMAGE_NAME" ]; then
+    read -p "Enter a description for the images, for example SummerCampaign2026: " IMAGE_NAME
+fi
 
 OUTPUT_PATH="${IMAGE_LOCATION}/Intune"
 PAYLOAD_ROOT="${OUTPUT_PATH}/payload"
