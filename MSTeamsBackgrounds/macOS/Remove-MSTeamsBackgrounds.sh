@@ -1,50 +1,52 @@
 #!/bin/bash
 
 # Uninstall Teams custom backgrounds
-# Removes Teams background files containing the supplied IMAGE_NAME text
-# If DELETEALL is entered, all custom background files are removed
+# Removes all Teams background files by default
+# If -RemoveImages is passed with text, only matching files are removed
 # Forgets package receipt: uk.co.jamesvincent.teamsbackgrounds
 # James Vincent - May 2026
 
 # Usage:
-#   ./Remove-MSTeamsBackgrounds.sh SummerCampaign2026
-#   ./Remove-MSTeamsBackgrounds.sh DELETEALL
-#
-# If no parameter is supplied, the script prompts interactively allowing for it to be used within Intune, and as a standalone.
+#   ./Remove-MSTeamsBackgrounds.sh
+#   ./Remove-MSTeamsBackgrounds.sh -RemoveImages "SummerCampaign2026"
 
 set -e
 
-IMAGE_NAME="${1:-}"
+REMOVE_IMAGES=""
 
 TARGET_PATH="$HOME/Library/Containers/com.microsoft.teams2/Data/Library/Application Support/Microsoft/MSTeams/Backgrounds/Uploads"
 PKG_IDENTIFIER="uk.co.jamesvincent.teamsbackgrounds"
 
-if [ -z "$IMAGE_NAME" ]; then
-    read -p "Enter the image description/name to remove, or DELETEALL to remove everything: " IMAGE_NAME
-fi
-
-if [ -z "$IMAGE_NAME" ]; then
-    echo "IMAGE_NAME cannot be empty."
-    exit 1
-fi
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -RemoveImages)
+            REMOVE_IMAGES="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown parameter: $1"
+            exit 1
+            ;;
+    esac
+done
 
 if [ ! -d "$TARGET_PATH" ]; then
     echo "Target path does not exist:"
     echo "$TARGET_PATH"
 else
-    if [ "$IMAGE_NAME" = "DELETEALL" ]; then
-        echo "DELETEALL specified. Removing all Teams background files..."
+    if [ -z "$REMOVE_IMAGES" ]; then
+        echo "No -RemoveImages parameter supplied. Removing all Teams background files..."
 
         find "$TARGET_PATH" -maxdepth 1 -type f \( \
             -iname "*.jpg" -o \
             -iname "*.jpeg" \
         \) -print -delete
     else
-        echo "Removing Teams backgrounds containing: $IMAGE_NAME"
+        echo "Removing Teams background files containing: $REMOVE_IMAGES"
 
         find "$TARGET_PATH" -maxdepth 1 -type f \( \
-            -iname "*${IMAGE_NAME}*.jpg" -o \
-            -iname "*${IMAGE_NAME}*.jpeg" \
+            -iname "*${REMOVE_IMAGES}*.jpg" -o \
+            -iname "*${REMOVE_IMAGES}*.jpeg" \
         \) -print -delete
     fi
 
