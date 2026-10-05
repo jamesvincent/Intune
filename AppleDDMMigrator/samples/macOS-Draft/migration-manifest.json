@@ -1,0 +1,239 @@
+{
+  "policySha256": "A9A90324E874A52B556AA6538B2839B1643B360CE155013FF923F192807FB61F",
+  "sourceTenantId": "DEMO-OFFLINE",
+  "sourceReplacementApproved": false,
+  "bindings": {
+    "schemaVersion": 1,
+    "structuralDefinitionIds": [],
+    "bindings": [
+      {
+        "sourceKey": "passwordMinimumLength",
+        "targetDefinitionId": "DEMO_ONLY_MAC_minimum_length",
+        "targetPath": "com.apple.configuration.passcode.settings/MinimumLength"
+      },
+      {
+        "sourceKey": "passwordRequired",
+        "targetDefinitionId": "DEMO_ONLY_MAC_require_passcode",
+        "targetPath": "com.apple.configuration.passcode.settings/RequirePasscode",
+        "optionMap": {
+          "true": "DEMO_ONLY_true",
+          "false": "DEMO_ONLY_false"
+        }
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "templateSha256": "55EAC79C63A3C6C6AD04976D413883A32E540FA36B9122DBB823118A109A531E",
+  "platform": "macOS",
+  "omittedSettings": [
+    {
+      "platform": "macOS",
+      "targetDefinitionIds": [],
+      "normalisedValue": true,
+      "minimumOS": "13.0",
+      "minimumMacOS": "13.0",
+      "compatibilityStatus": "Unknown",
+      "compatibilityEvidence": {
+        "passed": 2,
+        "unknown": 1,
+        "blocked": 0,
+        "total": 3,
+        "status": "Unknown",
+        "summary": "2 passed, 0 blocked, 1 unknown / 3 macOS devices (OS/supervision only; platform-wide).",
+        "scope": "Platform-wide inventory; assignment targeting not resolved"
+      },
+      "sourcePolicyId": "mac-password",
+      "sourcePolicyName": "macOS - Corporate Password",
+      "sourceKind": "legacy",
+      "sourceKey": "passwordBlockSimple",
+      "sourcePath": "passwordBlockSimple",
+      "displayName": "passwordBlockSimple",
+      "currentTechnology": "Legacy MDM",
+      "currentValue": true,
+      "classification": "DDM_DIRECT",
+      "mappingId": "mac-passcode-complex",
+      "targetPath": "com.apple.configuration.passcode.settings/RequireComplexPasscode",
+      "proposedValue": true,
+      "appleSupport": "Supported",
+      "intuneSupport": "Target definition not resolved; review current Intune availability",
+      "minimumIOS": "",
+      "supervisionRequired": false,
+      "estateCompatibility": "2 passed, 0 blocked, 1 unknown / 3 macOS devices (OS/supervision only; platform-wide).",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "platform": "macOS",
+      "targetDefinitionIds": [],
+      "normalisedValue": 10,
+      "minimumOS": "13.0",
+      "minimumMacOS": "13.0",
+      "compatibilityStatus": "Unknown",
+      "compatibilityEvidence": {
+        "passed": 2,
+        "unknown": 1,
+        "blocked": 0,
+        "total": 3,
+        "status": "Unknown",
+        "summary": "2 passed, 0 blocked, 1 unknown / 3 macOS devices (OS/supervision only; platform-wide).",
+        "scope": "Platform-wide inventory; assignment targeting not resolved"
+      },
+      "sourcePolicyId": "mac-password",
+      "sourcePolicyName": "macOS - Corporate Password",
+      "sourceKind": "legacy",
+      "sourceKey": "passwordMaximumAttemptCount",
+      "sourcePath": "passwordMaximumAttemptCount",
+      "displayName": "passwordMaximumAttemptCount",
+      "currentTechnology": "Legacy MDM",
+      "currentValue": 10,
+      "classification": "DDM_DIRECT",
+      "mappingId": "mac-passcode-attempts",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumFailedAttempts",
+      "proposedValue": 10,
+      "appleSupport": "Supported",
+      "intuneSupport": "Target definition not resolved; review current Intune availability",
+      "minimumIOS": "",
+      "supervisionRequired": false,
+      "estateCompatibility": "2 passed, 0 blocked, 1 unknown / 3 macOS devices (OS/supervision only; platform-wide).",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles. On macOS failed-attempt handling locks the device; it is not an iOS-style data wipe.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "platform": "macOS",
+      "targetDefinitionIds": [],
+      "normalisedValue": 15,
+      "minimumOS": "13.1",
+      "minimumMacOS": "13.1",
+      "compatibilityStatus": "Unknown",
+      "compatibilityEvidence": {
+        "passed": 2,
+        "unknown": 1,
+        "blocked": 0,
+        "total": 3,
+        "status": "Unknown",
+        "summary": "2 passed, 0 blocked, 1 unknown / 3 macOS devices (OS/supervision only; platform-wide).",
+        "scope": "Platform-wide inventory; assignment targeting not resolved"
+      },
+      "sourcePolicyId": "mac-password",
+      "sourcePolicyName": "macOS - Corporate Password",
+      "sourceKind": "legacy",
+      "sourceKey": "passwordMinutesUntilFailedLoginReset",
+      "sourcePath": "passwordMinutesUntilFailedLoginReset",
+      "displayName": "passwordMinutesUntilFailedLoginReset",
+      "currentTechnology": "Legacy MDM",
+      "currentValue": 15,
+      "classification": "DDM_DIRECT",
+      "mappingId": "mac-failed-reset",
+      "targetPath": "com.apple.configuration.passcode.settings/FailedAttemptsResetInMinutes",
+      "proposedValue": 15,
+      "appleSupport": "Supported",
+      "intuneSupport": "Target definition not resolved; review current Intune availability",
+      "minimumIOS": "",
+      "supervisionRequired": false,
+      "estateCompatibility": "2 passed, 0 blocked, 1 unknown / 3 macOS devices (OS/supervision only; platform-wide).",
+      "notes": "Review together with MaximumFailedAttempts. macOS-only setting; validate login lock/reset behaviour. Enrolment and channel need separate review.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "platform": "macOS",
+      "targetDefinitionIds": [],
+      "normalisedValue": 60,
+      "minimumOS": "13.1",
+      "minimumMacOS": "13.1",
+      "compatibilityStatus": "Unknown",
+      "compatibilityEvidence": {
+        "passed": 2,
+        "unknown": 1,
+        "blocked": 0,
+        "total": 3,
+        "status": "Unknown",
+        "summary": "2 passed, 0 blocked, 1 unknown / 3 macOS devices (OS/supervision only; platform-wide).",
+        "scope": "Platform-wide inventory; assignment targeting not resolved"
+      },
+      "sourcePolicyId": "mac-password",
+      "sourcePolicyName": "macOS - Corporate Password",
+      "sourceKind": "legacy",
+      "sourceKey": "passwordExpirationDays",
+      "sourcePath": "passwordExpirationDays",
+      "displayName": "passwordExpirationDays",
+      "currentTechnology": "Legacy MDM",
+      "currentValue": 60,
+      "classification": "DDM_DIRECT",
+      "mappingId": "mac-passcode-age",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumPasscodeAgeInDays",
+      "proposedValue": 60,
+      "appleSupport": "Supported",
+      "intuneSupport": "Target definition not resolved; review current Intune availability",
+      "minimumIOS": "",
+      "supervisionRequired": false,
+      "estateCompatibility": "2 passed, 0 blocked, 1 unknown / 3 macOS devices (OS/supervision only; platform-wide).",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "platform": "macOS",
+      "targetDefinitionIds": [],
+      "normalisedValue": [
+        {
+          "identifier": "com.example.remote",
+          "screenCapture": "allowStandardUserToSetSystemService"
+        }
+      ],
+      "minimumOS": "",
+      "minimumMacOS": "",
+      "compatibilityStatus": "NotApplicable",
+      "compatibilityEvidence": {
+        "passed": 0,
+        "unknown": 0,
+        "blocked": 0,
+        "total": 0,
+        "status": "NotApplicable",
+        "summary": "No verified target to check.",
+        "scope": "Platform-wide inventory; assignment targeting not resolved"
+      },
+      "sourcePolicyId": "mac-password",
+      "sourcePolicyName": "macOS - Corporate Password",
+      "sourceKind": "legacy",
+      "sourceKey": "privacyAccessControls",
+      "sourcePath": "privacyAccessControls",
+      "displayName": "privacyAccessControls",
+      "currentTechnology": "Legacy MDM",
+      "currentValue": [
+        {
+          "identifier": "com.example.remote",
+          "screenCapture": "allowStandardUserToSetSystemService"
+        }
+      ],
+      "classification": "LEGACY_RETAIN",
+      "mappingId": "mac-retain-security-template",
+      "targetPath": "",
+      "proposedValue": null,
+      "appleSupport": "Unverified",
+      "intuneSupport": "Unverified",
+      "minimumIOS": "",
+      "supervisionRequired": null,
+      "estateCompatibility": "No verified target to check.",
+      "notes": "Retain this security workload. No native DDM replacement is asserted by this catalogue; consider standard MDM Settings Catalog modernisation separately.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    }
+  ],
+  "generatedAt": "2026-10-05T12:29:46.3853757Z",
+  "sourceSettings": 7,
+  "mapped": 2,
+  "sourcePolicyId": "mac-password",
+  "assignments": []
+}

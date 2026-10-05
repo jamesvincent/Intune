@@ -1,0 +1,756 @@
+{
+  "version": "2026-10-05.1",
+  "reviewedAt": "2026-10-05",
+  "rules": [
+    {
+      "id": "mac-passcode-required",
+      "sourceKeys": [
+        "passwordRequired"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/RequirePasscode",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "boolean",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-required-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/forcePIN"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/RequirePasscode",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "boolean",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-length",
+      "sourceKeys": [
+        "passwordMinimumLength"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/MinimumLength",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 0,
+      "maximum": 16,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-length-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/minLength"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/MinimumLength",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 0,
+      "maximum": 16,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-complex",
+      "sourceKeys": [
+        "passwordBlockSimple"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/RequireComplexPasscode",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "boolean",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-complex-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/allowSimple"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/RequireComplexPasscode",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "invertBoolean",
+      "valueType": "boolean",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-attempts",
+      "sourceKeys": [
+        "passwordMaximumAttemptCount"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumFailedAttempts",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles. On macOS failed-attempt handling locks the device; it is not an iOS-style data wipe.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 2,
+      "maximum": 11,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-attempts-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/maxFailedAttempts"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumFailedAttempts",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles. On macOS failed-attempt handling locks the device; it is not an iOS-style data wipe.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 2,
+      "maximum": 11,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-idle",
+      "sourceKeys": [
+        "passwordMinutesOfInactivityBeforeScreenTimeout"
+      ],
+      "classification": "DDM_SEMANTIC",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumInactivityInMinutes",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles. macOS translates this setting to screensaver behaviour; verify resulting lock behaviour in a pilot.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 0,
+      "maximum": 15,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-idle-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/maxInactivity"
+      ],
+      "classification": "DDM_SEMANTIC",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumInactivityInMinutes",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles. macOS translates this setting to screensaver behaviour; verify resulting lock behaviour in a pilot.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 0,
+      "maximum": 15,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-grace",
+      "sourceKeys": [
+        "passwordMinutesOfInactivityBeforeLock"
+      ],
+      "classification": "DDM_SEMANTIC",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumGracePeriodInMinutes",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles. macOS translates this setting to screensaver behaviour; verify resulting lock behaviour in a pilot.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 0,
+      "maximum": 2147483647,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-grace-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/maxGracePeriod"
+      ],
+      "classification": "DDM_SEMANTIC",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumGracePeriodInMinutes",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles. macOS translates this setting to screensaver behaviour; verify resulting lock behaviour in a pilot.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 0,
+      "maximum": 2147483647,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-age",
+      "sourceKeys": [
+        "passwordExpirationDays"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumPasscodeAgeInDays",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 0,
+      "maximum": 730,
+      "minimumOS": "13.1",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-age-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/maxPINAgeInDays"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/MaximumPasscodeAgeInDays",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 0,
+      "maximum": 730,
+      "minimumOS": "13.1",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-history",
+      "sourceKeys": [
+        "passwordPreviousPasswordBlockCount"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/PasscodeReuseLimit",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 1,
+      "maximum": 50,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-history-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/pinHistory"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/PasscodeReuseLimit",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "integer",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimum": 1,
+      "maximum": 50,
+      "minimumOS": "13.0",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-alphanumeric",
+      "sourceKeys": [
+        "passwordRequiredType"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/RequireAlphanumericPasscode",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "passwordType",
+      "valueType": "boolean",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimumOS": "13.1",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-passcode-alphanumeric-plist",
+      "sourceKeys": [
+        "com.apple.mobiledevice.passwordpolicy/requireAlphanumeric"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/RequireAlphanumericPasscode",
+      "appleSupport": "Supported",
+      "intuneSupport": "Listed in DDM catalogue; resolve tenant definition/template",
+      "supervisionRequired": false,
+      "transform": "identity",
+      "valueType": "boolean",
+      "notes": "Review macOS system/user channel and effective password intent. Apple allows supervised/local enrolment; device OS checks do not validate enrolment or channel. Password restrictions combine with existing profiles.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ],
+      "minimumOS": "13.1",
+      "allowedScopes": [
+        "system",
+        "user"
+      ],
+      "allowedEnrollments": [
+        "supervised",
+        "local"
+      ]
+    },
+    {
+      "id": "mac-failed-reset",
+      "sourceKeys": [
+        "passwordMinutesUntilFailedLoginReset",
+        "com.apple.mobiledevice.passwordpolicy/minutesUntilFailedLoginReset"
+      ],
+      "classification": "DDM_DIRECT",
+      "targetPath": "com.apple.configuration.passcode.settings/FailedAttemptsResetInMinutes",
+      "minimumOS": "13.1",
+      "supervisionRequired": false,
+      "valueType": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "notes": "Review together with MaximumFailedAttempts. macOS-only setting; validate login lock/reset behaviour. Enrolment and channel need separate review.",
+      "appleSupport": "Supported",
+      "intuneSupport": "Resolve tenant definition",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/passcode.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "id": "mac-update-major",
+      "sourceKeys": [
+        "softwareUpdateMajorOSDeferredInstallDelayInDays",
+        "com.apple.applicationaccess/enforcedSoftwareUpdateMajorOSDeferredInstallDelay"
+      ],
+      "classification": "DDM_SEMANTIC",
+      "targetPath": "com.apple.configuration.softwareupdate.settings/Deferrals/MajorPeriodInDays",
+      "minimumOS": "15.0",
+      "supervisionRequired": true,
+      "valueType": "integer",
+      "minimum": 1,
+      "maximum": 90,
+      "notes": "Visibility deferral, not an installation deadline. Preserve distinct major/minor/system intent; verify supervision and companion enable flags for custom payloads.",
+      "appleSupport": "Supported",
+      "intuneSupport": "Resolve tenant definition",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/softwareupdate.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "id": "mac-update-minor",
+      "sourceKeys": [
+        "softwareUpdateMinorOSDeferredInstallDelayInDays",
+        "com.apple.applicationaccess/enforcedSoftwareUpdateMinorOSDeferredInstallDelay"
+      ],
+      "classification": "DDM_SEMANTIC",
+      "targetPath": "com.apple.configuration.softwareupdate.settings/Deferrals/MinorPeriodInDays",
+      "minimumOS": "15.0",
+      "supervisionRequired": true,
+      "valueType": "integer",
+      "minimum": 1,
+      "maximum": 90,
+      "notes": "Visibility deferral, not an installation deadline. Preserve distinct major/minor/system intent; verify supervision and companion enable flags for custom payloads.",
+      "appleSupport": "Supported",
+      "intuneSupport": "Resolve tenant definition",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/softwareupdate.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "id": "mac-update-system",
+      "sourceKeys": [
+        "softwareUpdateNonOSDeferredInstallDelayInDays",
+        "com.apple.applicationaccess/enforcedSoftwareUpdateNonOSDeferredInstallDelay"
+      ],
+      "classification": "DDM_SEMANTIC",
+      "targetPath": "com.apple.configuration.softwareupdate.settings/Deferrals/SystemPeriodInDays",
+      "minimumOS": "15.0",
+      "supervisionRequired": true,
+      "valueType": "integer",
+      "minimum": 1,
+      "maximum": 90,
+      "notes": "Visibility deferral, not an installation deadline. Preserve distinct major/minor/system intent; verify supervision and companion enable flags for custom payloads.",
+      "appleSupport": "Supported",
+      "intuneSupport": "Resolve tenant definition",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/softwareupdate.settings.yaml",
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "id": "mac-update-ambiguous-delay",
+      "sourceKeys": [
+        "softwareUpdatesEnforcedDelayInDays",
+        "updateDelayPolicy",
+        "com.apple.applicationaccess/enforcedSoftwareUpdateDelay",
+        "com.apple.applicationaccess/forceDelayedMajorSoftwareUpdates",
+        "com.apple.applicationaccess/forceDelayedSoftwareUpdates",
+        "com.apple.applicationaccess/forceDelayedAppSoftwareUpdates"
+      ],
+      "classification": "REQUIRES_REVIEW",
+      "targetPath": "com.apple.configuration.softwareupdate.settings/Deferrals",
+      "notes": "Generic delay/mode or enable flag needs policy-level intent review; do not fan one number out to every macOS update period. Use explicit major/minor/system values where configured.",
+      "sources": [
+        "https://github.com/apple/device-management/blob/release/declarative/declarations/configurations/softwareupdate.settings.yaml"
+      ]
+    },
+    {
+      "id": "mac-retain-security-template",
+      "sourceKeys": [
+        "fileVaultEnabled",
+        "fileVaultSelectedRecoveryKeyTypes",
+        "fileVaultPersonalRecoveryKeyHelpMessage",
+        "fileVaultAllowDeferralUntilSignOut",
+        "fileVaultNumberOfTimesUserCanIgnore",
+        "firewallEnabled",
+        "firewallBlockAllIncoming",
+        "firewallEnableStealthMode",
+        "gatekeeperAllowedAppSource",
+        "gatekeeperBlockOverride",
+        "privacyAccessControls"
+      ],
+      "classification": "LEGACY_RETAIN",
+      "targetPath": "",
+      "notes": "Retain this security workload. No native DDM replacement is asserted by this catalogue; consider standard MDM Settings Catalog modernisation separately.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "id": "mac-retain-restrictions",
+      "sourceKeys": [
+        "cameraBlocked",
+        "airDropBlocked",
+        "iCloudBlockDocumentSync",
+        "keychainBlockCloudSync",
+        "safariBlockAutofill",
+        "screenCaptureBlocked"
+      ],
+      "classification": "LEGACY_RETAIN",
+      "targetPath": "",
+      "notes": "No verified native DDM equivalence in this catalogue. Retain and review any Settings Catalog standard-MDM improvement separately. Safari extensions do not replace generic Safari restrictions.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    }
+  ],
+  "retainedPayloads": [
+    {
+      "payload": "com.apple.TCC.configuration-profile-policy",
+      "notes": "PPPC: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.system-extension-policy",
+      "notes": "System extensions: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.syspolicy.kernel-extension-policy",
+      "notes": "Kernel extensions: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.MCX.FileVault2",
+      "notes": "FileVault: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.security.FDERecoveryKeyEscrow",
+      "notes": "FileVault key escrow: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.security.firewall",
+      "notes": "Firewall: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.systempolicy.control",
+      "notes": "Gatekeeper: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.loginwindow",
+      "notes": "Login window: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.wifi.managed",
+      "notes": "Wi-Fi: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.vpn.managed",
+      "notes": "VPN: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.security.scep",
+      "notes": "SCEP: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.security.pkcs1",
+      "notes": "Certificates: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.security.pkcs12",
+      "notes": "Certificates: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    },
+    {
+      "payload": "com.apple.security.root",
+      "notes": "Trusted certificates: retain. No native DDM replacement is asserted by this catalogue. Assess MDM Settings Catalog separately without dropping workload coverage.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/intune/device-configuration/settings-catalog/ref-apple-settings"
+      ]
+    }
+  ]
+}

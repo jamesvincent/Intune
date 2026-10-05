@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "tenantId": "DEMO-OFFLINE",
+  "complete": true,
+  "deviceInventoryIncluded": true,
+  "devices": [
+    {
+      "id": "mac15",
+      "operatingSystem": "macOS",
+      "osVersion": "15.2.1",
+      "isSupervised": true
+    },
+    {
+      "id": "mac14",
+      "operatingSystem": "macOS",
+      "osVersion": "14.7",
+      "isSupervised": true
+    },
+    {
+      "id": "macunknown",
+      "operatingSystem": "macOS",
+      "osVersion": "unknown"
+    },
+    {
+      "id": "ios18",
+      "operatingSystem": "iOS",
+      "osVersion": "18.5",
+      "isSupervised": true
+    }
+  ],
+  "definitions": [],
+  "policies": [
+    {
+      "id": "mac-password",
+      "displayName": "macOS - Corporate Password",
+      "platform": "macOS",
+      "sourceKind": "legacy",
+      "@odata.type": "#microsoft.graph.macOSGeneralDeviceConfiguration",
+      "passwordRequired": true,
+      "passwordMinimumLength": 12,
+      "passwordBlockSimple": true,
+      "passwordMaximumAttemptCount": 10,
+      "passwordMinutesUntilFailedLoginReset": 15,
+      "passwordExpirationDays": 60,
+      "privacyAccessControls": [
+        {
+          "identifier": "com.example.remote",
+          "screenCapture": "allowStandardUserToSetSystemService"
+        }
+      ],
+      "assignments": [],
+      "settingsProvenance": "explicit"
+    },
+    {
+      "id": "mac-updates",
+      "displayName": "macOS - Update Deferrals",
+      "platform": "macOS",
+      "sourceKind": "legacy",
+      "@odata.type": "#microsoft.graph.macOSGeneralDeviceConfiguration",
+      "softwareUpdateMajorOSDeferredInstallDelayInDays": 30,
+      "softwareUpdateMinorOSDeferredInstallDelayInDays": 14,
+      "softwareUpdateNonOSDeferredInstallDelayInDays": 7,
+      "softwareUpdatesEnforcedDelayInDays": 30,
+      "updateDelayPolicy": "delayOSUpdateVisibility",
+      "assignments": [],
+      "settingsProvenance": "explicit"
+    },
+    {
+      "id": "mac-security",
+      "displayName": "macOS - Endpoint Protection",
+      "platform": "macOS",
+      "sourceKind": "legacy",
+      "@odata.type": "#microsoft.graph.macOSEndpointProtectionConfiguration",
+      "fileVaultEnabled": true,
+      "firewallEnabled": true,
+      "gatekeeperAllowedAppSource": "macAppStoreAndIdentifiedDevelopers",
+      "assignments": [],
+      "settingsProvenance": "explicit"
+    },
+    {
+      "id": "demo-passcode",
+      "displayName": "iOS - Corporate Passcode",
+      "sourceKind": "legacy",
+      "@odata.type": "#microsoft.graph.iosGeneralDeviceConfiguration",
+      "passcodeRequired": true,
+      "passcodeMinimumLength": 8,
+      "passcodeBlockSimple": true,
+      "passcodeSignInFailureCountBeforeWipe": 10,
+      "passcodeMinutesOfInactivityBeforeScreenTimeout": 5,
+      "passcodeMinimumCharacterSetCount": 2,
+      "cameraBlocked": true,
+      "assignments": [],
+      "platform": "iOS",
+      "settingsProvenance": "explicit"
+    },
+    {
+      "id": "demo-updates",
+      "displayName": "iOS - Update Deferral",
+      "sourceKind": "legacy",
+      "@odata.type": "#microsoft.graph.iosGeneralDeviceConfiguration",
+      "softwareUpdatesForceDelayed": true,
+      "softwareUpdatesEnforcedDelayInDays": 30,
+      "assignments": [],
+      "platform": "iOS",
+      "settingsProvenance": "explicit"
+    },
+    {
+      "id": "demo-safari",
+      "displayName": "iOS - Safari Restrictions",
+      "sourceKind": "legacy",
+      "@odata.type": "#microsoft.graph.iosGeneralDeviceConfiguration",
+      "safariBlockJavaScript": false,
+      "safariBlockPopups": true,
+      "assignments": [],
+      "platform": "iOS",
+      "settingsProvenance": "explicit"
+    }
+  ]
+}

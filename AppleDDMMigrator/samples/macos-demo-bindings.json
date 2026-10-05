@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "structuralDefinitionIds": [],
+  "bindings": [
+    {
+      "sourceKey": "passwordMinimumLength",
+      "targetDefinitionId": "DEMO_ONLY_MAC_minimum_length",
+      "targetPath": "com.apple.configuration.passcode.settings/MinimumLength"
+    },
+    {
+      "sourceKey": "passwordRequired",
+      "targetDefinitionId": "DEMO_ONLY_MAC_require_passcode",
+      "targetPath": "com.apple.configuration.passcode.settings/RequirePasscode",
+      "optionMap": {
+        "true": "DEMO_ONLY_true",
+        "false": "DEMO_ONLY_false"
+      }
+    }
+  ]
+}

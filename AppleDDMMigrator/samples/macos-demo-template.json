@@ -1,0 +1,29 @@
+{
+  "name": "DEMO ONLY - macOS DDM scaffold fixture",
+  "platforms": "macOS",
+  "technologies": "mdm",
+  "settings": [
+    {
+      "id": "read-only-setting-id",
+      "settingInstance": {
+        "@odata.type": "#microsoft.graph.deviceManagementConfigurationSimpleSettingInstance",
+        "settingDefinitionId": "DEMO_ONLY_MAC_minimum_length",
+        "simpleSettingValue": {
+          "@odata.type": "#microsoft.graph.deviceManagementConfigurationIntegerSettingValue",
+          "value": 6
+        }
+      }
+    },
+    {
+      "settingInstance": {
+        "@odata.type": "#microsoft.graph.deviceManagementConfigurationChoiceSettingInstance",
+        "settingDefinitionId": "DEMO_ONLY_MAC_require_passcode",
+        "choiceSettingValue": {
+          "@odata.type": "#microsoft.graph.deviceManagementConfigurationChoiceSettingValue",
+          "value": "DEMO_ONLY_true",
+          "children": []
+        }
+      }
+    }
+  ]
+}
